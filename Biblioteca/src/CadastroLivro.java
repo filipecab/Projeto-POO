@@ -1,14 +1,15 @@
-import java.time.LocalDate;
+import java.time.Year;
+
 
 public class CadastroLivro {
     
     private String titulo;
     private String autor;
     private String isbn;
-    private LocalDate ano;
+    private Year ano;
     private String editora;
 
-    public CadastroLivro(String titulo, String autor, String iSBN, LocalDate ano, String editora) {
+    public CadastroLivro(String titulo, String autor, String iSBN, Year ano, String editora) {
         this.titulo = titulo;
         this.autor = autor;
         this.isbn = iSBN;
@@ -40,11 +41,11 @@ public class CadastroLivro {
         this.isbn = isbn;
     }
 
-    public LocalDate getAno() {
+    public Year getAno() {
         return ano;
     }
 
-    public void setAno(LocalDate ano) {
+    public void setAno(Year ano) {
         this.ano = ano;
     }
 
