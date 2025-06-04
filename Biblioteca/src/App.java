@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.time.LocalDate;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -24,13 +26,15 @@ public class App {
             System.out.println("----------------------");
             System.out.print("Digite: ");
             opcao = sc.nextInt();
-            sc.nextLine(); // consumir quebra de linha
+            sc.nextLine(); 
 
             System.out.println();
 
+            String resposta="";
+
             switch (opcao) {
                 case 1:
-                    String resposta;
+                    
                     do {
                         System.out.print("Digite o título: ");
                         String titulo = sc.nextLine();
@@ -43,7 +47,7 @@ public class App {
 
                         System.out.print("Digite o ano de lançamento: ");
                         int ano = sc.nextInt();
-                        sc.nextLine(); // consumir quebra de linha
+                        sc.nextLine(); 
                         Year data = Year.of(ano);
 
                         System.out.print("Digite a editora: ");
@@ -61,7 +65,45 @@ public class App {
                     break;
 
                 case 2:
-                    // cadastrar usuário
+                    
+                    do {
+                        System.out.print("Digite o nome: ");
+                        String nome = sc.nextLine();
+
+                        System.out.print("Digite o cpf: ");
+                        String cpf = sc.nextLine();
+
+                        System.out.print("Digite a matricula: ");
+                        String matricula = sc.nextLine();
+
+                        System.out.print("Digite o email: ");
+                        String emaill = sc.next();
+                        sc.nextLine(); 
+                       
+
+                        System.out.print("Selecione o tipo: 1 - Aluno, 2 - Professor ");
+                        int t=sc.nextInt();
+                        tipo tipoUsuario = null;
+
+                        if (t == 1) {
+                            tipoUsuario = tipo.ALUNO;
+                        } else if (t == 2) {
+                            tipoUsuario = tipo.PROFESSOR;
+                        } else {
+                            System.out.println("Opção inválida. Usuário não cadastrado.");
+                            continue; 
+                        }
+                        Usuario novoUsuario = new Usuario(nome, cpf, matricula, emaill, tipoUsuario);
+                        user.add(novoUsuario);
+
+                        System.out.println("Usuario cadastrado com sucesso!");
+                        System.out.print("Deseja cadastrar outro Usuario? (s/n): ");
+                        resposta = sc.nextLine().toLowerCase();
+
+                        System.out.println();
+                    } while (resposta.equals("s"));
+
+
                     break;
 
                 case 3:
@@ -69,7 +111,22 @@ public class App {
                     break;
 
                 case 4:
-                    // emprestar livro
+                    System.out.println("Qual livor deseja emprestar? ");
+                    
+                    //listar livros
+
+                    System.out.println("Qual usuario deseja pegar o livro? ");
+
+                    //lista usuarios cadastrados
+
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                    System.out.println("Qual a data do emprestimo? dd/MM/yyyy");
+                    String dataEmprestimo = sc.nextLine();
+                    LocalDate data = LocalDate.parse(dataEmprestimo, formatter);
+
+                    //Emprestimo novoEmprestimo = new Emprestimo();
+                    //emprestimo.add(novoEmprestimo);
                     break;
 
                 case 0:
