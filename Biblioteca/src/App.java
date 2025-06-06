@@ -111,23 +111,98 @@ public class App {
                     break;
 
                 case 4:
-                    System.out.println("Qual livor deseja emprestar? ");
-                    
-                    //listar livros
+                    if (livro.isEmpty()) {
+                        System.out.println("Nenhum livro cadastrado ainda.");
+                        break;
+                    }
 
-                    System.out.println("Qual usuario deseja pegar o livro? ");
+                    CadastroLivro livroEscolhido = null;
 
-                    //lista usuarios cadastrados
+                    while (livroEscolhido == null) {
+                        System.out.println("Livros disponíveis para empréstimo:");
+
+                        List<CadastroLivro> livrosDisponiveis = new ArrayList<>();
+                        for (CadastroLivro liv : livro) {
+                            boolean estaEmprestado = false;
+                            for (Emprestimo emp : emprestar) {
+                                if (liv.getTitulo().equalsIgnoreCase(emp.getLivro().getTitulo()) &&
+                                    emp.getStatus() == Status.INDISPONIVEL) {
+                                    estaEmprestado = true;
+                                    break;
+                                }
+                            }
+                            if (!estaEmprestado) {
+                                livrosDisponiveis.add(liv);
+                                System.out.println("- " + liv.getTitulo());
+                            }
+                        }
+
+                        if (livrosDisponiveis.isEmpty()) {
+                            System.out.println("Todos os livros estão emprestados no momento.");
+                            break;
+                        }
+
+                        System.out.println("----------------------------------------");
+                        System.out.print("Escolha o título conforme a lista acima: ");
+                        String titulo = sc.nextLine();
+
+                        for (CadastroLivro liv : livrosDisponiveis) {
+                            if (liv.getTitulo().equalsIgnoreCase(titulo)) {
+                                livroEscolhido = liv;
+                                break;
+                            }
+                        }
+
+                        if (livroEscolhido == null) {
+                            System.out.println("Livro não encontrado. Tente novamente.\n");
+                        }
+                    }
+
+                    if (livroEscolhido == null) break; // se ainda for null, sai do case
+
+                    if (user.isEmpty()) {
+                        System.out.println("Nenhum usuário cadastrado ainda.");
+                        break;
+                    }
+
+                    System.out.println("Qual usuário deseja pegar o livro?");
+                    for (Usuario u : user) {
+                        System.out.println("- " + u.getNome());
+                    }
+
+                    System.out.println("----------------------------------------");
+                    System.out.print("Escolha o nome conforme a lista acima: ");
+                    String nome = sc.nextLine();
+
+                    Usuario usuarioEscolhido = null;
+                    for (Usuario u : user) {
+                        if (u.getNome().equalsIgnoreCase(nome)) {
+                            usuarioEscolhido = u;
+                            break;
+                        }
+                    }
+
+                    if (usuarioEscolhido == null) {
+                        System.out.println("Usuário não encontrado. Tente novamente.");
+                        break;
+                    }
+
+                    System.out.println("----------------------------------------");
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-                    System.out.println("Qual a data do emprestimo? dd/MM/yyyy");
+                    System.out.println("Qual a data do empréstimo? (dd/MM/yyyy)");
                     String dataEmprestimo = sc.nextLine();
                     LocalDate data = LocalDate.parse(dataEmprestimo, formatter);
 
-                    //Emprestimo novoEmprestimo = new Emprestimo();
-                    //emprestimo.add(novoEmprestimo);
+                    // Cria o novo empréstimo com status INDISPONIVEL
+                    Emprestimo novoEmprestimo = new Emprestimo(usuarioEscolhido, livroEscolhido, data, Status.INDISPONIVEL);
+                    emprestar.add(novoEmprestimo);
+
+                    System.out.println("Empréstimo realizado com sucesso!");
+                    System.out.println("Número do Empréstimo: " + novoEmprestimo.getNumeroEmprestimo());
                     break;
+
 
                 case 0:
                     System.out.println("Encerrando o programa...");
