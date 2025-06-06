@@ -107,7 +107,20 @@ public class App {
                     break;
 
                 case 3:
-                    // listar livros
+                    
+                    if (livro.isEmpty()) {
+                        System.out.println("Nenhum livro cadastrado ainda.");
+                        break;
+                    }
+                    
+                    for (CadastroLivro liv : livro) {
+                        System.out.println("Título: " + liv.getTitulo());
+                        System.out.println("Autor: " + liv.getAutor());
+                        System.out.println("ISBN: " + liv.getIsbn());
+                        System.out.println("Ano de Lançamento: " + liv.getAno());
+                        System.out.println("Editora: " + liv.getEditora());
+                        System.out.println("----------------------------------------");
+                    }
                     break;
 
                 case 4:
@@ -158,7 +171,7 @@ public class App {
                         }
                     }
 
-                    if (livroEscolhido == null) break; // se ainda for null, sai do case
+                    if (livroEscolhido == null) break; 
 
                     if (user.isEmpty()) {
                         System.out.println("Nenhum usuário cadastrado ainda.");
@@ -195,7 +208,7 @@ public class App {
                     String dataEmprestimo = sc.nextLine();
                     LocalDate data = LocalDate.parse(dataEmprestimo, formatter);
 
-                    // Cria o novo empréstimo com status INDISPONIVEL
+                    
                     Emprestimo novoEmprestimo = new Emprestimo(usuarioEscolhido, livroEscolhido, data, Status.INDISPONIVEL);
                     emprestar.add(novoEmprestimo);
 
