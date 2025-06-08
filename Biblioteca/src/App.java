@@ -29,6 +29,7 @@ public class App {
             System.out.println("Digite 2 - Para Cadastrar novo Usuário");
             System.out.println("Digite 3 - Para Listar Livros");
             System.out.println("Digite 4 - Para Emprestar Livro");
+            System.out.println("Digite 5 - Para Devolver Livro");
             System.out.println("Digite 0 - Para Sair");
             System.out.print("Digite: ");
 
@@ -76,47 +77,49 @@ public class App {
                     break;
 
                 case 2:
-                    // Cadastrar usuários
+                    
                     do {
                         try {
                             System.out.print("Digite o nome: ");
                             String nome = sc.nextLine();
 
-                            System.out.print("Digite o cpf: ");
+                            System.out.print("Digite o CPF: ");
                             String cpf = sc.nextLine();
 
                             System.out.print("Digite a matrícula: ");
                             String matricula = sc.nextLine();
 
                             System.out.print("Digite o email: ");
-                            String email = sc.next();
-                            sc.nextLine(); 
+                            String email = sc.nextLine();
 
-                            System.out.print("Selecione o tipo: 1 - Aluno, 2 - Professor: ");
-                            int t = sc.nextInt();
+                            System.out.print("Tipo: 1-Aluno ou 2-Professor? ");
+                            int tipo = sc.nextInt();
                             sc.nextLine();
-                            tipo tipoUsuario = null;
 
-                            if (t == 1) {
-                                tipoUsuario = tipo.ALUNO;
-                            } else if (t == 2) {
-                                tipoUsuario = tipo.PROFESSOR;
+                            Usuario novoUsuario;
+                            if (tipo == 1) {
+                                System.out.print("Período do aluno: ");
+                                int periodo = sc.nextInt();
+                                sc.nextLine();
+                                novoUsuario = new Aluno(nome, cpf, matricula, email, periodo);
+                            } else if (tipo == 2) {
+                                System.out.print("Departamento do professor: ");
+                                String departamento = sc.nextLine();
+                                novoUsuario = new Professor(nome, cpf, matricula, email, departamento);
                             } else {
-                                System.out.println("Opção inválida. Usuário não cadastrado.");
-                                continue; // Volta para o início do loop
+                                System.out.println("Opção inválida!");
+                                continue;
                             }
 
-                            Usuario novoUsuario = new Usuario(nome, cpf, matricula, email, tipoUsuario);
                             user.add(novoUsuario);
-
                             System.out.println("Usuário cadastrado com sucesso!");
+
                         } catch (Exception e) {
-                            System.out.println("Erro ao cadastrar usuário: " + e.getMessage());
+                            System.out.println("Erro: " + e.getMessage());
                         }
 
-                        System.out.print("Deseja cadastrar outro usuário? (s/n): ");
+                        System.out.print("Cadastrar outro usuário? (s/n): ");
                         resposta = sc.nextLine().toLowerCase();
-                        System.out.println();
                     } while (resposta.equals("s"));
                     break;
 
@@ -252,6 +255,56 @@ public class App {
                     }
 
                     break;
+
+                case 5: // Devolução de Livro
+                    do {
+                        System.out.println("\n--- DEVOLUÇÃO DE LIVRO ---");
+                        
+                        // Filtra empréstimos ativos (INDISPONÍVEL)
+                        List<Emprestimo> ativos = new ArrayList<>();
+                        for (Emprestimo emp : emprestar) {
+                            if (emp.getStatus() == Status.INDISPONIVEL) {
+                                ativos.add(emp);
+                            }
+                        }
+
+                        if (ativos.isEmpty()) {
+                            System.out.println("Não há livros emprestados no momento.");
+                            break;
+                        }
+
+                        // Lista empréstimos ativos
+                        System.out.println("Livros emprestados:");
+                        for (int i = 0; i < ativos.size(); i++) {
+                            Emprestimo emp = ativos.get(i);
+                            System.out.printf("%d - Nº %s | %s (%s) | Emprestado para: %s%n",
+                                i + 1,
+                                emp.getNumeroEmprestimo(),
+                                emp.getLivro().getTitulo(),
+                                emp.getDataEmprestimo().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                                emp.getUsuario().getNome());
+                        }
+
+                        // Processa devolução
+                        System.out.print("\nEscolha o número do empréstimo para devolver: ");
+                        int escolha = sc.nextInt();
+                        sc.nextLine(); // Limpa buffer
+
+                        if (escolha > 0 && escolha <= ativos.size()) {
+                            Emprestimo selecionado = ativos.get(escolha - 1);
+                            selecionado.setStatus(Status.DISPONIVEL);
+                            
+                            System.out.printf("\n Livro \"%s\" devolvido com sucesso!%n",
+                                selecionado.getLivro().getTitulo());
+                        } else {
+                            System.out.println("\n Opção inválida!");
+                        }
+
+                        System.out.print("\nDeseja devolver outro livro? (s/n): ");
+                        resposta = sc.nextLine().toLowerCase();
+                        
+                    } while (resposta.equals("s"));
+                    break;    
 
                 case 0:
                     // Encerra o programa

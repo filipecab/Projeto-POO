@@ -1,71 +1,49 @@
-// Classe que representa um usuário da biblioteca
-public class Usuario {
+public abstract class Usuario {
+    protected String nome;
+    protected String cpf;
+    protected String matricula;
+    protected String email;
 
-    // Atributos privados que armazenam as informações pessoais do usuário
-    private String nome;         // Nome completo do usuário
-    private String cpf;          // CPF do usuário
-    private String matricula;    // Número de matrícula (pode ser RA, ID institucional etc.)
-    private String emaill;       // E-mail de contato
-    private tipo tipo;           // Tipo de usuário (ALUNO ou PROFESSOR) - usa um enum chamado 'tipo'
-
-    /**
-     * Construtor da classe Usuario.
-     * Inicializa os atributos com os valores recebidos ao criar um novo objeto.
-     * 
-     * @param nome      Nome do usuário
-     * @param cpf       CPF do usuário
-     * @param matricula Número de matrícula
-     * @param emaill    E-mail do usuário
-     * @param tipo      Tipo de usuário (enum: ALUNO ou PROFESSOR)
-     */
-    public Usuario(String nome, String cpf, String matricula, String emaill, tipo tipo) {
+    public Usuario(String nome, String cpf, String matricula, String email) {
         this.nome = nome;
         this.cpf = cpf;
         this.matricula = matricula;
-        this.emaill = emaill;
-        this.tipo = tipo;
+        this.email = email;
     }
 
-    // Métodos GET e SET (acessadores e modificadores)
-    // Permitem acessar e modificar os atributos da classe com segurança
-
+    // Getters e Setters
     public String getNome() {
-        return nome; // Retorna o nome do usuário
+        return nome;
     }
 
     public void setNome(String nome) {
-        this.nome = nome; // Altera o nome do usuário
+        this.nome = nome;
     }
 
     public String getCpf() {
-        return cpf; // Retorna o CPF
+        return cpf;
     }
 
     public void setCpf(String cpf) {
-        this.cpf = cpf; // Altera o CPF
+        this.cpf = cpf;
     }
 
     public String getMatricula() {
-        return matricula; // Retorna a matrícula
+        return matricula;
     }
 
     public void setMatricula(String matricula) {
-        this.matricula = matricula; // Altera a matrícula
+        this.matricula = matricula;
     }
 
-    public String getEmaill() {
-        return emaill; // Retorna o e-mail
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmaill(String emaill) {
-        this.emaill = emaill; // Altera o e-mail
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public tipo getTipo() {
-        return tipo; // Retorna o tipo do usuário (ALUNO ou PROFESSOR)
-    }
-
-    public void setTipo(tipo tipo) {
-        this.tipo = tipo; // Altera o tipo de usuário
-    }
+    // Método abstrato para tipo específico
+    public abstract String getTipoUsuario();
 }
