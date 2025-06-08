@@ -99,8 +99,7 @@ public class App {
                             Usuario novoUsuario;
                             if (tipo == 1) {
                                 System.out.print("Período do aluno: ");
-                                int periodo = sc.nextInt();
-                                sc.nextLine();
+                                String periodo = sc.nextLine();
                                 novoUsuario = new Aluno(nome, cpf, matricula, email, periodo);
                             } else if (tipo == 2) {
                                 System.out.print("Departamento do professor: ");
